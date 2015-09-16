@@ -1,4 +1,4 @@
-h1, #player_turn, #output {
+h1, #player_turn, #output, .choose_number_of_players, #new_game_button {
   text-align: center;
 }
 
@@ -43,13 +43,15 @@ h1, #player_turn {
   padding: 10px;
 }
 
-
-
-
-/*.showme {
+.container, #new_game_button {  /*hide board until user choses number of players*/
   display: none;
 }
 
+.secondary_button_color {
+  background-color: lightgrey;
+}
+
+/*
 #contacts {
   cursor: pointer;
   color: #3388cc;
@@ -59,6 +61,4 @@ h1, #player_turn {
   text-decoration: underline;
 }
 
-.secondary_button_color {
-  background-color: lightgrey;
-}*/
+*/

@@ -1,7 +1,8 @@
 board = [[9, 9, 9], [9, 9, 9], [9, 9, 9]]; //9 = empty space, 1 = "X", 2 = "O"
 var player_one_color = "#d54";
 var player_two_color = "#5a4";
-var player_number;
+var player_number; //whose turn is it?
+var number_of_players;
 
 function startGame() {
   //start with player one
@@ -17,19 +18,21 @@ function markBox(clicked) {
   if (markSquareResult == "Space already taken" && player_number < 9) {
     $("#output").text(markSquareResult);
   }
-  else if (markSquareResult == "Player 1 wins!!") {
+  else if (markSquareResult == "Player 1 wins!!" && player_number < 9) {
     $("#" + clicked).css("color", player_one_color).text("X");
     player_number = 9; //make sure the game can't be played anymore
     $("#player_turn").css("color", player_one_color);
     $("#player_turn").text("Game Over");
     $("#output").text(markSquareResult);
+    $("#new_game_button").show();
   }
-  else if (markSquareResult == "Player 2 wins!!") {
+  else if (markSquareResult == "Player 2 wins!!" && player_number < 9) {
     $("#" + clicked).css("color", player_two_color).text("O");
     player_number = 9; //make sure the game can't be played anymore
     $("#player_turn").css("color", player_two_color);
     $("#player_turn").text("Game Over");
     $("#output").text(markSquareResult);
+    $("#new_game_button").show();
   }
   else if (player_number == 1) {
     $("#" + clicked).css("color", player_one_color).text("X");
@@ -37,13 +40,34 @@ function markBox(clicked) {
     $("#player_turn").css("color", player_two_color);
     $("#player_turn").text("Player 2's Turn");
     $("#output").text("");  //empty output incase an error message was there
+    if (number_of_players == 1) {
+      do {
+        var done = 0;
+        var random_x = Math.floor(Math.random() * 3); //random number between 0 and 2
+        var random_y = Math.floor(Math.random() * 3); //random number between 0 and 2
+        if (board[random_x][random_y] == 9) {
+          done = 1;
+          clicked = "_" + random_x + "_" + random_y;
+          $("#" + clicked).css("color", player_two_color).text("O");
+          markSquareResult = markSquare(random_x, random_y, player_number);
+          if (markSquareResult == "Player 2 wins!!") {
+            player_number = 9; //make sure the game can't be played anymore
+            $("#player_turn").css("color", player_two_color);
+            $("#player_turn").text("Game Over");
+            $("#output").text(markSquareResult);
+            $("#new_game_button").show();
+          }
+        }
+      } while (done == 0);
+      if (player_number == 2) {player_number = 1;} //don't change player_number if it equals 9
+    }
   }
-  else if (player_number == 2) {
-    $("#" + clicked).css("color", player_two_color).text("O");
-    player_number = 1;
-    $("#player_turn").css("color", player_one_color);
-    $("#player_turn").text("Player 1's Turn");
-    $("#output").text("");  //empty output incase an error message was there
+  else if (player_number == 2 && number_of_players == 2) {
+      $("#" + clicked).css("color", player_two_color).text("O");
+      player_number = 1;
+      $("#player_turn").css("color", player_one_color);
+      $("#player_turn").text("Player 1's Turn");
+      $("#output").text("");  //empty output incase an error message was there
   }
 }
 
@@ -81,7 +105,36 @@ function win() {
 
 
 $(document).ready(function() {
-  startGame();
+  event.preventDefault();
+  $("#one_player").click(function() {
+    number_of_players = 1;
+    startGame();
+    $(".choose_number_of_players").hide();
+    $(".container").fadeIn(1000);
+  });
+
+  $("#two_players").click(function() {
+    number_of_players = 2;
+    startGame();
+    $(".choose_number_of_players").hide();
+    $(".container").fadeIn(1000);
+  });
+
+  $("#new_game_button").click(function() {
+    //get rid of all X's and O's on the board
+    for (var x=0; x<=2; x++) {
+      for (var y=0; y<=2; y++) {
+        var div_id = "_" + x + "_" + y;
+        $("#" + div_id).text("");
+      }
+    }
+
+    board = [[9, 9, 9], [9, 9, 9], [9, 9, 9]]; //reset board array
+    $(".container").hide();
+    $("#new_game_button").hide();
+    $(".choose_number_of_players").show();
+  });
+
   $(document.body).click(function(evt) {
     var clicked = evt.target.id;
     if (clicked.match(/_\d_\d/)) { //don't go into markBox unless one of the 9 boxes are clicked
