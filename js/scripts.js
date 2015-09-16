@@ -40,7 +40,15 @@ function markBox(clicked) {
     $("#player_turn").css("color", player_two_color);
     $("#player_turn").text("Player 2's Turn");
     $("#output").text("");  //empty output incase an error message was there
-    if (number_of_players == 1) {
+    markSquareResult = markSquare(row, column, player_number);
+    if (markSquareResult == "Player 1 wins!!" && player_number < 9) {
+      player_number = 9; //make sure the game can't be played anymore
+      $("#player_turn").css("color", player_one_color);
+      $("#player_turn").text("Game Over");
+      $("#output").text(markSquareResult);
+      $("#new_game_button").show();
+    }
+    if (number_of_players == 1 && checkForEmptySpaces()) {
       do {
         var done = 0;
         var random_x = Math.floor(Math.random() * 3); //random number between 0 and 2
@@ -57,6 +65,11 @@ function markBox(clicked) {
             $("#output").text(markSquareResult);
             $("#new_game_button").show();
           }
+          else {
+            $("#player_turn").css("color", player_one_color);
+            $("#player_turn").text("Player 1's Turn");
+            $("#output").text("");  //empty output incase an error message was there
+          }
         }
       } while (done == 0);
       if (player_number == 2) {player_number = 1;} //don't change player_number if it equals 9
@@ -68,6 +81,29 @@ function markBox(clicked) {
       $("#player_turn").css("color", player_one_color);
       $("#player_turn").text("Player 1's Turn");
       $("#output").text("");  //empty output incase an error message was there
+  }
+  if (!(checkForEmptySpaces())) {
+    player_number = 9; //make sure the game can't be played anymore
+    $("#player_turn").text("");
+    $("#output").text("Tie Game");
+    $("#new_game_button").show();
+  }
+}
+
+function checkForEmptySpaces() {
+  var empty = 0;
+  for (var x=0; x<=2; x++) {
+    for (var y=0; y<=2; y++) {
+      if (board[x][y] == 9) {
+        empty = 1;
+      }
+    }
+  }
+  if (empty) {
+    return true;
+  }
+  else {
+    return false;
   }
 }
 
