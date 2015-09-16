@@ -38,7 +38,7 @@ $(document).ready(function() {
 
   $(document.body).click(function(evt) {
     var clicked = evt.target.id;
-    console.log(clicked);
+    $("#" + clicked).text("O");
   }); //end document.body
 }); //end document.ready
 
