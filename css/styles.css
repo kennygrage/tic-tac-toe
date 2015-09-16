@@ -1,4 +1,31 @@
-.showme {
+#_0_0, #_0_1, #_0_2, #_1_0, #_1_1, #_1_2, #_2_0, #_2_1, #_2_2  {
+  height: 75px;
+  text-align: center; /*horizontial align*/
+  padding-top:25px;   /*vertical align*/
+}
+
+#_0_1, #_2_1 {
+  border: solid grey;
+  border-width: 0 5px;
+}
+
+#_1_0, #_1_2 {
+  border: solid grey;
+  border-width: 5px 0px;
+}
+
+#_1_1 {
+  border: solid grey;
+  border-width: 5px;
+}
+
+
+
+
+
+
+
+/*.showme {
   display: none;
 }
 
@@ -13,4 +40,4 @@
 
 .secondary_button_color {
   background-color: lightgrey;
-}
+}*/
