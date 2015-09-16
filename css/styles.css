@@ -1,0 +1,16 @@
+.showme {
+  display: none;
+}
+
+#contacts {
+  cursor: pointer;
+  color: #3388cc;
+}
+
+.contact:hover {
+  text-decoration: underline;
+}
+
+.secondary_button_color {
+  background-color: lightgrey;
+}
