@@ -1,95 +1,38 @@
-board = [[9, 9, 9], [9, 9, 9], [9, 9, 9]]; //9 = empty space, 1 = "X", 2 = "O"
-var player_one_color = "#d54";
-var player_two_color = "#5a4";
-var player_number; //whose turn is it?
-var number_of_players;
+//**********Global Variables**********//
+var player_one_color = "#d54";                 //Color of "X" and "Player 1's Turn" at the bottom
+var player_two_color = "#5a4";                 //Color of "O" and "Player 2's Turn" at the bottom
+var player_colors = ["", "#d54", "#5a4"];      //Color of "X" or "O" on the board and "Player 1's Turn" or "Player 2's Turn" at the bottom
+var player_turn;                               //whose turn is it?
+var player_letter = ["", "X", "O"];            //Player letter
+var number_of_players;                         //Either 2 players or 1 player with computer
+var board = [[9, 9, 9], [9, 9, 9], [9, 9, 9]]; //9 = empty space, 1 = "X", 2 = "O"
+// Board[x][y] locations:
+// [0][0] - [0][1] - [0][2]
+//
+// [1][0] - [1][1] - [1][2]
+//
+// [2][0] - [2][1] - [2][2]
 
+
+
+//**********Print Player 1's Turn on the bottom and set player_turn = 1***********//
 function startGame() {
   //start with player one
-  player_number = 1;
-  $("#player_turn").css("color", player_one_color);
-  $("#player_turn").text("Player 1's Turn");
-}
+  player_turn = 1;
+  playerTurnText("Player " + player_turn + "'s Turn"); //Player 1's color and turn going into "#player_turn"
+} //end startGame()
 
-function markBox(clicked) {
-  var row = clicked.substring(1,2);
-  var column = clicked.substring(3,4);
-  var markSquareResult = markSquare(row, column, player_number);
-  if (markSquareResult == "Space already taken" && player_number < 9) {
-    $("#output").text(markSquareResult);
-  }
-  else if (markSquareResult == "Player 1 wins!!" && player_number < 9) {
-    $("#" + clicked).css("color", player_one_color).text("X");
-    player_number = 9; //make sure the game can't be played anymore
-    $("#player_turn").css("color", player_one_color);
-    $("#player_turn").text("Game Over");
-    $("#output").text(markSquareResult);
-    $("#new_game_button").show();
-  }
-  else if (markSquareResult == "Player 2 wins!!" && player_number < 9) {
-    $("#" + clicked).css("color", player_two_color).text("O");
-    player_number = 9; //make sure the game can't be played anymore
-    $("#player_turn").css("color", player_two_color);
-    $("#player_turn").text("Game Over");
-    $("#output").text(markSquareResult);
-    $("#new_game_button").show();
-  }
-  else if (player_number == 1) {
-    $("#" + clicked).css("color", player_one_color).text("X");
-    player_number = 2;
-    $("#player_turn").css("color", player_two_color);
-    $("#player_turn").text("Player 2's Turn");
-    $("#output").text("");  //empty output incase an error message was there
-    markSquareResult = markSquare(row, column, player_number);
-    if (markSquareResult == "Player 1 wins!!" && player_number < 9) {
-      player_number = 9; //make sure the game can't be played anymore
-      $("#player_turn").css("color", player_one_color);
-      $("#player_turn").text("Game Over");
-      $("#output").text(markSquareResult);
-      $("#new_game_button").show();
-    }
-    if (number_of_players == 1 && checkForEmptySpaces()) {
-      do {
-        var done = 0;
-        var random_x = Math.floor(Math.random() * 3); //random number between 0 and 2
-        var random_y = Math.floor(Math.random() * 3); //random number between 0 and 2
-        if (board[random_x][random_y] == 9) {
-          done = 1;
-          clicked = "_" + random_x + "_" + random_y;
-          $("#" + clicked).css("color", player_two_color).text("O");
-          markSquareResult = markSquare(random_x, random_y, player_number);
-          if (markSquareResult == "Player 2 wins!!") {
-            player_number = 9; //make sure the game can't be played anymore
-            $("#player_turn").css("color", player_two_color);
-            $("#player_turn").text("Game Over");
-            $("#output").text(markSquareResult);
-            $("#new_game_button").show();
-          }
-          else {
-            $("#player_turn").css("color", player_one_color);
-            $("#player_turn").text("Player 1's Turn");
-            $("#output").text("");  //empty output incase an error message was there
-          }
-        }
-      } while (done == 0);
-      if (player_number == 2) {player_number = 1;} //don't change player_number if it equals 9
-    }
-  }
-  else if (player_number == 2 && number_of_players == 2) {
-      $("#" + clicked).css("color", player_two_color).text("O");
-      player_number = 1;
-      $("#player_turn").css("color", player_one_color);
-      $("#player_turn").text("Player 1's Turn");
-      $("#output").text("");  //empty output incase an error message was there
-  }
-  if (!(checkForEmptySpaces())) {
-    player_number = 9; //make sure the game can't be played anymore
-    $("#player_turn").text("");
-    $("#output").text("Tie Game");
-    $("#new_game_button").show();
-  }
-}
 
+
+//**********Takes location of square after all logic if it should be placed and marks on the board**********//
+function placeLetter(clicked) {
+  $("#" + clicked).css("color", player_colors[player_turn]).text(player_letter[player_turn]); //"X" or "O" depending on player_turn
+
+} //end placeLetter()
+
+
+
+//**********Check to see if there are no more spaces -> Tie Game**********//
 function checkForEmptySpaces() {
   var empty = 0;
   for (var x=0; x<=2; x++) {
@@ -105,23 +48,31 @@ function checkForEmptySpaces() {
   else {
     return false;
   }
-}
+} //end checkForEmptySpaces()
 
-function markSquare(row, column, player_number) {
-  if (board[row][column] != 9) {
-    return "Space already taken";
+
+
+//**********Changes the text written in "#player_turn"**********//
+function playerTurnText(text_going_into_player_turn) {
+  $("#player_turn").css("color", player_colors[player_turn]);
+  if (text_going_into_player_turn == "Player " + player_turn + " wins!!") {
+    $("#player_turn").text("Game Over");
   }
   else {
-    board[row][column] = player_number;
-    if (win()) {
-      return "Player " + player_number + " wins!!";
-    }
-    else {
-      return board;
-    }
+    $("#player_turn").text(text_going_into_player_turn);
   }
-}
+} //end playerTurnText()
 
+
+
+//**********Changes the text written in "#output"**********//
+function outputText(text_going_into_output) {
+  $("#output").text(text_going_into_output);
+} //end outputText()
+
+
+
+//**********Check to see if the current player won**********//
 function win() {
   if ((board[0][0] == board[0][1] && board[0][0] == board[0][2] && board[0][0] < 9) || //top row
       (board[1][0] == board[1][1] && board[1][0] == board[1][2] && board[1][0] < 9) || //middle row
@@ -137,25 +88,124 @@ function win() {
   else {
     return false;
   }
-}
+} //end win()
 
 
+
+//**********Mark the square in the array**********//
+function markSquareInArray(row, column, player_turn) {
+  if (board[row][column] != 9) {
+    return "Space already taken";
+  }
+  else {
+    board[row][column] = player_turn;
+    if (win()) {
+      return "Player " + player_turn + " wins!!";
+    }
+    else {
+      return board;
+    }
+  }
+} //end markSquareInArray()
+
+
+
+//**********Check if space is already taken, there is a winner, etc, and send to mark the square**********//
+function markSquareOnBoard(clicked) {
+  var row = clicked.substring(1,2);
+  var column = clicked.substring(3,4);
+  var markSquareInArrayResult = markSquareInArray(row, column, player_turn); //place the result in the array
+  if (markSquareInArrayResult == "Space already taken" && player_turn < 9) {
+    outputText(markSquareInArrayResult);
+  }
+  else if ((markSquareInArrayResult == "Player 1 wins!!" ||
+            markSquareInArrayResult == "Player 2 wins!!") &&
+            player_turn < 9) {
+    placeLetter(clicked);
+    playerTurnText(markSquareInArrayResult);
+    outputText(markSquareInArrayResult);
+    player_turn = 9; //make sure the game can't be played anymore
+    $("#new_game_button").show();
+  }
+  else if (player_turn == 1) { //player 1's turn
+    placeLetter(clicked); //place the result on the board
+    player_turn = 2; //now change it to player 2's turn
+    playerTurnText("Player 2's Turn");
+    outputText(""); //empty output incase an error message was there
+  }
+  else if (player_turn == 2 && number_of_players == 2) { //player 2's turn (human)
+      placeLetter(clicked);
+      player_turn = 1;
+      playerTurnText("Player 1's Turn");
+      $("#output").text("");  //empty output incase an error message was there
+  }
+
+  //not part of the if..else if chain above so that player 1 doesn't need to click for player 2 computer to go
+  if (player_turn == 2 && number_of_players == 1) { //player 2's turn (computer)
+    if (markSquareInArrayResult == "Player 1 wins!!" && player_turn < 9) {
+      player_turn = 1; //for the correct colors going into the proceeding functions
+      playerTurnText(markSquareInArrayResult); //Player (1 or 2) wins !! results in "Game Over" output
+      outputText(markSquareInArrayResult);
+      player_turn = 9; //make sure the game can't be played anymore
+      $("#new_game_button").show();
+    }
+    if (number_of_players == 1 && checkForEmptySpaces()) {
+      do {
+        var done = 0;
+        var random_x = Math.floor(Math.random() * 3); //random number between 0 and 2
+        var random_y = Math.floor(Math.random() * 3); //random number between 0 and 2
+        if (board[random_x][random_y] == 9) {         //if the random space is empty
+          done = 1;                                   //don't keep looking for spaces because we found one
+          clicked = "_" + random_x + "_" + random_y;  //Div ID of the random space chosen
+          markSquareInArrayResult = markSquareInArray(random_x, random_y, player_turn);
+          placeLetter(clicked);
+          if (markSquareInArrayResult == "Player 2 wins!!") {
+            playerTurnText(markSquareInArrayResult); //Player (1 or 2) wins !! results in "Game Over" output
+            outputText(markSquareInArrayResult);
+            player_turn = 9; //make sure the game can't be played anymore
+            $("#new_game_button").show();
+          }
+          else {
+            playerTurnText("Player 1's Turn");
+            outputText(""); //empty output incase an error message was there
+          }
+        }
+      } while (done == 0);
+      if (player_turn == 2) {player_turn = 1;} //don't change player_turn if it equals 9
+    }
+  }
+
+  if (!(checkForEmptySpaces())) {
+    playerTurnText("");
+    outputText("Tie Game");
+    player_turn = 9; //make sure the game can't be played anymore
+    $("#new_game_button").show();
+  }
+} //end markSquareOnBoard()
+
+
+
+//**********When document is ready, give player option of 1 player or 2 player game**********//
 $(document).ready(function() {
   event.preventDefault();
+
+  //***Button for one player***//
   $("#one_player").click(function() {
     number_of_players = 1;
     startGame();
     $(".choose_number_of_players").hide();
     $(".container").fadeIn(1000);
-  });
+  }); //end button for one player
 
+  //***Button for two players***//
   $("#two_players").click(function() {
     number_of_players = 2;
     startGame();
     $(".choose_number_of_players").hide();
     $(".container").fadeIn(1000);
-  });
+  });//end button for two players
 
+  //***Button for new game***//
   $("#new_game_button").click(function() {
     //get rid of all X's and O's on the board
     for (var x=0; x<=2; x++) {
@@ -164,24 +214,30 @@ $(document).ready(function() {
         $("#" + div_id).text("");
       }
     }
-
     board = [[9, 9, 9], [9, 9, 9], [9, 9, 9]]; //reset board array
-    $(".container").hide();
-    $("#new_game_button").hide();
-    $(".choose_number_of_players").show();
-  });
+    $(".container").hide();                    //hide the board
+    $("#new_game_button").hide();              //hide the new game button
+    $(".choose_number_of_players").show();     //show the two buttons: one for a 1 player game and another for a 2 player game
+  }); //end button for new game
 
+  //Capture div ID when player clicks on the board
   $(document.body).click(function(evt) {
     var clicked = evt.target.id;
-    if (clicked.match(/_\d_\d/)) { //don't go into markBox unless one of the 9 boxes are clicked
-      markBox(clicked);
+    if (clicked.match(/_\d_\d/)) { //don't go into markSquareOnBoard unless one of the 9 boxes are clicked
+      markSquareOnBoard(clicked);
     }
   }); //end document.body
 }); //end document.ready
 
-//board locations:
-// 0,0 - 0,1 - 0,2
-//
-// 1,0 - 1,1 - 1,2
-//
-// 2,0 - 2,1 - 2,2
+
+
+
+
+// else if (markSquareInArrayResult == "Player 2 wins!!" && player_turn < 9) {
+//   $("#" + clicked).css("color", player_two_color).text("O");
+//   player_turn = 9; //make sure the game can't be played anymore
+//   $("#player_turn").css("color", player_two_color);
+//   $("#player_turn").text("Game Over");
+//   $("#output").text(markSquareInArrayResult);
+//   $("#new_game_button").show();
+// }
