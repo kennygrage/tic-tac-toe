@@ -5,6 +5,7 @@ var player_colors = ["", "#d54", "#5a4"];      //Color of "X" or "O" on the boar
 var player_turn;                               //whose turn is it?
 var player_letter = ["", "X", "O"];            //Player letter
 var number_of_players;                         //Either 2 players or 1 player with computer
+var difficulty;                                //1 = easy & 2 = hard
 var board = [[9, 9, 9], [9, 9, 9], [9, 9, 9]]; //9 = empty space, 1 = "X", 2 = "O"
 // Board[x][y] locations:
 // [0][0] - [0][1] - [0][2]
@@ -141,7 +142,8 @@ function markSquareOnBoard(clicked) {
   }
 
   //not part of the if..else if chain above so that player 1 doesn't need to click for player 2 computer to go
-  if (player_turn == 2 && number_of_players == 1) { //player 2's turn (computer)
+  //player 2's turn (computer) on easy mode
+  if (player_turn == 2 && number_of_players == 1 && difficulty == 1) {
     if (markSquareInArrayResult == "Player 1 wins!!" && player_turn < 9) {
       player_turn = 1; //for the correct colors going into the proceeding functions
       playerTurnText(markSquareInArrayResult); //Player (1 or 2) wins !! results in "Game Over" output
@@ -175,7 +177,43 @@ function markSquareOnBoard(clicked) {
     }
   }
 
-  if (!(checkForEmptySpaces())) {
+  //not part of the if..else if chain above so that player 1 doesn't need to click for player 2 computer to go
+  //player 2's turn (computer) on hard mode
+  if (player_turn == 2 && number_of_players == 1 && difficulty == 2) {
+    if (markSquareInArrayResult == "Player 1 wins!!" && player_turn < 9) {
+      player_turn = 1; //for the correct colors going into the proceeding functions
+      playerTurnText(markSquareInArrayResult); //Player (1 or 2) wins !! results in "Game Over" output
+      outputText(markSquareInArrayResult);
+      player_turn = 9; //make sure the game can't be played anymore
+      $("#new_game_button").show();
+    }
+    if (number_of_players == 1 && checkForEmptySpaces()) {
+      do {
+        var done = 0;
+        var random_x = Math.floor(Math.random() * 3); //random number between 0 and 2
+        var random_y = Math.floor(Math.random() * 3); //random number between 0 and 2
+        if (board[random_x][random_y] == 9) {         //if the random space is empty
+          done = 1;                                   //don't keep looking for spaces because we found one
+          clicked = "_" + random_x + "_" + random_y;  //Div ID of the random space chosen
+          markSquareInArrayResult = markSquareInArray(random_x, random_y, player_turn);
+          placeLetter(clicked);
+          if (markSquareInArrayResult == "Player 2 wins!!") {
+            playerTurnText(markSquareInArrayResult); //Player (1 or 2) wins !! results in "Game Over" output
+            outputText(markSquareInArrayResult);
+            player_turn = 9; //make sure the game can't be played anymore
+            $("#new_game_button").show();
+          }
+          else {
+            playerTurnText("Player 1's Turn");
+            outputText(""); //empty output incase an error message was there
+          }
+        }
+      } while (done == 0);
+      if (player_turn == 2) {player_turn = 1;} //don't change player_turn if it equals 9
+    }
+  }
+
+  if (!(checkForEmptySpaces()) && !(win())) {
     playerTurnText("");
     outputText("Tie Game");
     player_turn = 9; //make sure the game can't be played anymore
@@ -185,13 +223,23 @@ function markSquareOnBoard(clicked) {
 
 
 
-//**********When document is ready, give player option of 1 player or 2 player game**********//
+//**********When document is ready, give player option of 1 player or 2 player game and start playing**********//
 $(document).ready(function() {
   event.preventDefault();
 
-  //***Button for one player***//
-  $("#one_player").click(function() {
+  //***Button for one player easy mode***//
+  $("#one_player_easy").click(function() {
     number_of_players = 1;
+    difficulty = 1;
+    startGame();
+    $(".choose_number_of_players").hide();
+    $(".container").fadeIn(1000);
+  }); //end button for one player
+
+  //***Button for one player hard mode***//
+  $("#one_player_hard").click(function() {
+    number_of_players = 1;
+    difficulty = 2;
     startGame();
     $(".choose_number_of_players").hide();
     $(".container").fadeIn(1000);
