@@ -63,7 +63,3 @@ h1, #player_turn {
 #two_players {
   width: 100px;
 }
-
-.container-non-responsive {
-  /*max-width: none !important;*/
-}

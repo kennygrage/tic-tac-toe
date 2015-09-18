@@ -30,7 +30,6 @@ function startGame() {
 //**********Takes location of square after all logic if it should be placed and marks on the board**********//
 function placeLetter(clicked) {
   $("#" + clicked).css("color", player_colors[player_turn]).text(player_letter[player_turn]); //"X" or "O" depending on player_turn
-
 } //end placeLetter()
 
 
