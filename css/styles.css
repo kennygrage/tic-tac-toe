@@ -3,19 +3,22 @@ h1, #player_turn, #output, .choose_number_of_players, #new_game_button {
 }
 
 h1, #player_turn {
-  padding: 25px;
+  padding: 25px 0px;
 }
 
-#_0_0, #_0_1, #_0_2, #_2_0, #_2_1, #_2_2  {
-  font-size: 45px;
+#_0_0, #_0_1, #_0_2  {
   text-align: center; /*horizontial align*/
-  padding-top:5px;   /*vertical align*/
+  padding-top: 10px;   /*vertical align*/
 }
 
 #_1_0, #_1_1, #_1_2 {
-  font-size: 45px;
   text-align: center; /*horizontial align*/
-  padding-top:0px;   /*vertical align*/
+  padding-top: 5px;   /*vertical align*/
+}
+
+#_2_0, #_2_1, #_2_2 {
+  text-align: center; /*horizontial align*/
+  padding-top: 5px;   /*vertical align*/
 }
 
 #_0_1, #_2_1 {
@@ -35,15 +38,21 @@ h1, #player_turn {
 
 
 #_0_0, #_0_1, #_0_2, #_2_0, #_2_1, #_2_2, #_1_0, #_1_1, #_1_2 {
-  height: 75px;
+  font-size: 75px;
+  height: 125px;
 }
+
+#side1, #side2, #side3, #side4, #side5, #side6 {
+  height: 125px;
+}
+
 #player_one, #player_two {
   background-clip:content-box; /*don't include padding in background color*/
-  height: 75px;
+  height: 125px;
   padding: 10px;
 }
 
-.container, #new_game_button {  /*hide board until user choses number of players*/
+.container-non-responsive, #new_game_button {  /*hide board until user choses number of players*/
   display: none;
 }
 
@@ -52,5 +61,9 @@ h1, #player_turn {
 }
 
 #two_players {
-  width: 125px;
+  width: 100px;
+}
+
+.container-non-responsive {
+  /*max-width: none !important;*/
 }

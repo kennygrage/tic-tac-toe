@@ -9,8 +9,8 @@
   <title></title>
 </head>
 <body>
-  <h1>Tic-Tac-Toe</h1>
   <div class="choose_number_of_players">
+    <h1>Tic-Tac-Toe</h1>
     <p>Please choose number of players:</p>
     <span class="btn btn-secondary secondary_button_color" id="one_player_easy">One Player (easy)</span>
     <span class="btn btn-secondary secondary_button_color" id="one_player_hard">One Player (hard)</span>
@@ -24,29 +24,41 @@
 
       _2_0 - _2_1 - _2_2 -->
 
-  <div class="container">
+  <div class="container-non-responsive">
     <div class="row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-2" id="_0_0"></div>
-      <div class="col-sm-2" id="_0_1"></div>
-      <div class="col-sm-2" id="_0_2"></div>
-      <div class="col-sm-3"></div>
+        <div class="col-xs-12">
+          <h1>Tic-Tac-Toe</h1>
+        </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-2" id="_1_0"></div>
-      <div class="col-sm-2" id="_1_1"></div>
-      <div class="col-sm-2" id="_1_2"></div>
-      <div class="col-sm-3"></div>
+      <div class="row-height">
+        <div class="col-xs-3 col-height" id="side1"></div>
+        <div class="col-xs-2 col-height" id="_0_0"></div>
+        <div class="col-xs-2 col-height" id="_0_1"></div>
+        <div class="col-xs-2 col-height" id="_0_2"></div>
+        <div class="col-xs-3 col-height" id="side2"></div>
+      </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-2" id="_2_0"></div>
-      <div class="col-sm-2" id="_2_1"></div>
-      <div class="col-sm-2" id="_2_2"></div>
-      <div class="col-sm-3"></div>
+      <div class="row-height">
+        <div class="col-xs-3 col-height" id="side3"></div>
+        <div class="col-xs-2 col-height" id="_1_0"></div>
+        <div class="col-xs-2 col-height" id="_1_1"></div>
+        <div class="col-xs-2 col-height" id="_1_2"></div>
+        <div class="col-xs-3 col-height" id="side4"></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row-height">
+        <div class="col-xs-3 col-height" id="side5"></div>
+        <div class="col-xs-2 col-height" id="_2_0"></div>
+        <div class="col-xs-2 col-height" id="_2_1"></div>
+        <div class="col-xs-2 col-height" id="_2_2"></div>
+        <div class="col-xs-3 col-height" id="side6"></div>
+      </div>
     </div>
 
     <h2 id="player_turn"></h2>

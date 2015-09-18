@@ -298,9 +298,7 @@ function markSquareOnBoard(clicked) {
       }
     }
 
-
-
-
+    //if we found a spot from our logic tests above
     if (found_a_spot > 0) {
       var x_position = clicked.substring(1,2);
       var y_position = clicked.substring(3,4);
@@ -319,37 +317,7 @@ function markSquareOnBoard(clicked) {
       }
     }
 
-
-
-
-
-
-
-
-    //random
-
-
-
-
-
-
-
-
-
-                              // if (markSquareInArrayResult == "Player 1 wins!!" && player_turn < 9) {
-                              //   player_turn = 1; //for the correct colors going into the proceeding functions
-                              //   playerTurnText(markSquareInArrayResult); //Player (1 or 2) wins !! results in "Game Over" output
-                              //   outputText(markSquareInArrayResult);
-                              //   player_turn = 9; //make sure the game can't be played anymore
-                              //   $("#new_game_button").show();
-                              // }
-
-
-
-
-
-
-
+    //Random if we did not find a logic test from above
     if (number_of_players == 1 && checkForEmptySpaces() && found_a_spot == 0) {
       do {
         var done = 0;
@@ -397,7 +365,7 @@ $(document).ready(function() {
     difficulty = 1;
     startGame();
     $(".choose_number_of_players").hide();
-    $(".container").fadeIn(1000);
+    $(".container-non-responsive").fadeIn(1000);
   }); //end button for one player
 
   //***Button for one player hard mode***//
@@ -406,7 +374,7 @@ $(document).ready(function() {
     difficulty = 2;
     startGame();
     $(".choose_number_of_players").hide();
-    $(".container").fadeIn(1000);
+    $(".container-non-responsive").fadeIn(1000);
   }); //end button for one player
 
   //***Button for two players***//
@@ -414,7 +382,7 @@ $(document).ready(function() {
     number_of_players = 2;
     startGame();
     $(".choose_number_of_players").hide();
-    $(".container").fadeIn(1000);
+    $(".container-non-responsive").fadeIn(1000);
   });//end button for two players
 
   //***Button for new game***//
@@ -427,7 +395,7 @@ $(document).ready(function() {
       }
     }
     board = [[9, 9, 9], [9, 9, 9], [9, 9, 9]]; //reset board array
-    $(".container").hide();                    //hide the board
+    $(".container-non-responsive").hide();                    //hide the board
     $("#new_game_button").hide();              //hide the new game button
     $(".choose_number_of_players").show();     //show the two buttons: one for a 1 player game and another for a 2 player game
   }); //end button for new game
