@@ -6,7 +6,7 @@
 
 ## Description
 
-This app is a two player tic tac toe game.
+This app is a tic tac toe game. The user has an option to play a one player game in easy mode, in hard more, or play two players.
 
 ## Setup
 
